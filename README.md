@@ -1,4 +1,4 @@
-## Lahman Baseball Database Exercise
+# Lahman Baseball Database Exercise
 - this data has been made available [online](http://www.seanlahman.com/baseball-archive/statistics/) by Sean Lahman
 - A data dictionary is included with the files for this project.
 
