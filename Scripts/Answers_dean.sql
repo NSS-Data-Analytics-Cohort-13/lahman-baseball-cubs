@@ -1,5 +1,5 @@
 --1. What range of years for baseball games played does the provided database cover? 
---1st attempt
+--1st attempt (assuming failed attempt)
 SELECT DISTINCT(yearid)
 FROM
 collegeplaying
@@ -14,12 +14,12 @@ WHERE yearid BETWEEN	(
 						)
 ORDER BY yearid ASC;
 
---2nd attempt
+--2nd attempt (assuming failed attempt)
 SELECT	MIN(yearid) as first_year
 	,	MAX(yearid) as last_year
 FROM collegeplaying;
 
---3rd attempt
+--3rd attempt (assuming good attempt)
 SELECT	MIN(span_first) AS first_year
 	,	max(span_last) as last_year 
 FROM homegames;
@@ -33,7 +33,7 @@ SELECT namegiven, height FROM people;
 --finding player with shortest height along with his playerid for next part of question
 SELECT playerid,namegiven, MIN(height) AS height FROM people GROUP BY namegiven, playerid ORDER BY height ASC LIMIT 1;
 
-
+--doublechecking to make sure games played are good
 SELECT teamid, yearid, playerid FROM appearances
 WHERE playerid = 'gaedeed01';--'alvarpe01' this is to check multiple games (SLA to be team id for player with shortest height)
 
@@ -61,7 +61,7 @@ ON pep.playerid = t.playerid
 WHERE t.playerid = 'gaedeed01'
 GROUP BY pep.namegiven ,t.name;
 
---3rd attempt
+--3rd attempt (final assumed good attempt)
 
 SELECT	p.namegiven
 	,	MIN(p.height) AS height
@@ -145,27 +145,23 @@ ORDER BY pep.namefirst,	pep.namelast DESC;
 
 -- 4. Using the fielding table, group players into three groups based on their position: label players with position OF as "Outfield", those with position "SS", "1B", "2B", and "3B" as "Infield", and those with position "P" or "C" as "Battery". Determine the number of putouts made by each of these three groups in 2016.
 
---1st attempt
+--1st attempt (assumed good attempt)
 SELECT CASE WHEN f.Pos = 'OF' THEN 'Outfield'
 			WHEN f.Pos = 'SS' or f.Pos = '1B' or f.Pos = '2B' or f.Pos = '3B' THEN 'Infeild'
 			WHEN f.Pos = 'P' or f.Pos = 'C' THEN 'Battery'
 		END as Positions
-	,COUNT(f.Pos)
+	,	COUNT(f.Pos)
 FROM fielding f 
 join homegames h 
 	on f.yearid = h.year
 WHERE extract(year from h.span_first) = '2016'
-GROUP BY F.POS
-
-GROUP BY CASE WHEN f.Pos = 'OF' THEN 'Outfield'
-			WHEN f.Pos = 'SS' or f.Pos = '1B' or f.Pos = '2B' or f.Pos = '3B' THEN 'Infeild'
-			WHEN f.Pos = 'P' or f.Pos = 'C' THEN 'Battery'
+GROUP BY positions
+		-- Not sure why case statement isn't working in the GROUP BY field but Alias(positions) works fine
+			-- GROUP BY CASE WHEN f.Pos = 'OF' THEN 'Outfield'
+			-- WHEN f.Pos = 'SS' or f.Pos = '1B' or f.Pos = '2B' or f.Pos = '3B' THEN 'Infeild'
+			-- WHEN f.Pos = 'P' or f.Pos = 'C' THEN 'Battery'
+			-- END
    
-
-
-
-
-
 
 -- 5. Find the average number of strikeouts per game by decade since 1920. Round the numbers you report to 2 decimal places. Do the same for home runs per game. Do you see any trends?
 
